@@ -32,7 +32,7 @@ Monitorare manualmente i sentiment degli utenti può essere inefficiente e sogge
 
 ### Fase 2: Creazione della Pipeline CI/CD
 
-- **Pipeline CI/CD**: Sviluppare una pipeline automatizzata per il training del modello, i test di integrazione e il deploy dell'applicazione su HuggingFace.
+- **Pipeline CI/CD**: Sviluppare una pipeline automatizzata per il training del modello, i test di integrazione (**opzionale**: e il deploy dell'applicazione su HuggingFace).
 
 ### Fase 3: Deploy e Monitoraggio Continuo
 
