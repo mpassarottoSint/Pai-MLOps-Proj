@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  sentiment-api:
+    build: .
+    ports:
+      - "8000:8000"
+    container_name: sentiment_service
+    restart: unless-stopped
+    volumes:
+      - model_data:/app/trained_model
+
+volumes:
+  model_data:
+    driver: local
