@@ -1,8 +1,9 @@
-version: '3.8'
 
 services:
   sentiment-api:
-    build: .
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     container_name: sentiment_service
@@ -12,4 +13,3 @@ services:
 
 volumes:
   model_data:
-    driver: local
