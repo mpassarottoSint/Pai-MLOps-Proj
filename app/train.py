@@ -2,6 +2,8 @@ from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
 import numpy as np
 import evaluate
+import json
+from pathlib import Path
 import torch
 
 # Model
@@ -53,6 +55,20 @@ trainer = Trainer(
 )
 
 trainer.train()
+# Evaluate on validation set and save metrics
+metrics = trainer.evaluate()
+metrics_path = Path("./model/metrics.json")
+metrics_path.parent.mkdir(parents=True, exist_ok=True)
+
+with open(metrics_path, "w") as f:
+    json.dump(metrics, f, indent=4)
+
+# Optional: log to plain text
+with open("./model/train.log", "w") as f:
+    f.write("Training complete.\n")
+    f.write("Final Evaluation Metrics:\n")
+    for k, v in metrics.items():
+        f.write(f"{k}: {v:.4f}\n")
 
 # Save the model
 model.save_pretrained("./model/")

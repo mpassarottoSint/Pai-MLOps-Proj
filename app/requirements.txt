@@ -6,6 +6,3 @@ scikit-learn
 datasets
 requests
 pytest
-pathlib
-csv
-datetime

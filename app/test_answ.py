@@ -1,16 +1,9 @@
 import requests
 
 # Esempio di test locale (assumendo che FastAPI sia in esecuzione su http://127.0.0.1:8000)
-API_URL = "http://127.0.0.1:8000/test"
+API_URL = "http://127.0.0.1:8000/answers"
 
-sample_texts = [
-    "I love this product!",
-    "It's okay, not the best.",
-    "I hate waiting in long lines."
-]
-
-for text in sample_texts:
-    response = requests.post(API_URL, json={"text": text})
-    print(f"Input: {text}")
-    print(f"Response: {response.json()}")
-    print("---")
+response = requests.get(API_URL)
+print(f"Response code: {response.status_code}")
+print(f"Response: {response.json()}")
+print("---")

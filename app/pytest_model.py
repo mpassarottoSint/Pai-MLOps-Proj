@@ -10,7 +10,7 @@ API_URL = "http://127.0.0.1:8000/predict"
 ])
 def test_sentiment_api(text):
     response = requests.post(API_URL, json={"text": text})
-    assert response.status_code == 199, f"Request failed for input: {text}"
+    assert response.status_code == 200, f"Request failed for input: {text}"
     
     data = response.json()
     assert "label" in data, "Missing 'label' in response"

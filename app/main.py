@@ -11,9 +11,12 @@ app = FastAPI(title="Sentiment Analysis API")
 
 MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 MODEL_DIR = "./model"
+MODEL_LOG_PATH = "/app/model/answers.csv"  # absolute path inside container
 
-# Load or download model and tokenizer
 def load_or_download_model():
+    """
+    Load the model and tokenizer from local directory if available, otherwise download from Hugging Face.
+    """
     if os.path.exists(MODEL_DIR) and os.path.isdir(MODEL_DIR):
         try:
             tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
@@ -27,8 +30,10 @@ def load_or_download_model():
 
     return tokenizer, model
 
-# Download from Hugging Face and save locally
 def download_and_save_model():
+    """"
+    Download the model and tokenizer from Hugging Face and save them locally.
+    """
     print("Downloading model from Hugging Face...")
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
@@ -48,11 +53,17 @@ class TextInput(BaseModel):
     text: str
 
 class SentimentOutput(BaseModel):
+    """
+    Response model for sentiment analysis output.
+    """
     label: str
     score: float
 
 @app.post("/predict", response_model=SentimentOutput)
 def predict_sentiment(input: TextInput):
+    """
+    Predict sentiment of the input text and log the prediction.
+    """
     result = classifier(input.text)[0]
     label = result['label']
     score = result['score']
@@ -63,7 +74,11 @@ def predict_sentiment(input: TextInput):
     return SentimentOutput(label=label, score=score)
 
 
-def log_prediction(text: str, label: str, score: float, path: str = "./model/answers.csv"):
+def log_prediction(text: str, label: str, score: float, path: str = MODEL_LOG_PATH):
+    """
+    Log the prediction to a CSV file.
+    Useful for tracking model performance and debugging.
+    """
     log_path = Path(path)
     log_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -77,6 +92,10 @@ def log_prediction(text: str, label: str, score: float, path: str = "./model/ans
 
 @app.get("/answers")
 def get_logged_predictions():
+    """
+    Retrieve logged predictions from the CSV file.
+    Useful for monitoring (Grafana).
+    """
     log_path = Path("./model/answers.csv")
     if not log_path.exists():
         return []
@@ -93,6 +112,20 @@ def get_logged_predictions():
             })
         return rows
 
-@app.post("/test", response_model=str)
+@app.get("/test-write")
+def test_write_csv():
+    from datetime import datetime, timezone
+    path = Path("./model/answers.csv")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, mode="a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["timestamp", "text", "predicted_label", "score"])
+        writer.writerow([datetime.now(timezone.utc).isoformat(), "test", "POSITIVE", 0.99])
+    return {"status": "written"}
+
+@app.post("/reach", response_model=str)
 def test_endpoint(input: TextInput):
+    """
+    Test endpoint to check if the API is running.
+    """
     return "Reached!"

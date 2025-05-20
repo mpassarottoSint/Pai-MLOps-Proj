@@ -1,15 +1,27 @@
+version: '3.8'
 
 services:
   sentiment-api:
     build:
       context: ./app
       dockerfile: Dockerfile
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
+    volumes:
+      - model_data:/app/model
     container_name: sentiment_service
     restart: unless-stopped
+
+  sentiment-train:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: python train.py
     volumes:
-      - model_data:/app/trained_model
+      - model_data:/app/model
+    container_name: sentiment_trainer
+    restart: "no"
 
 volumes:
   model_data:
