@@ -55,5 +55,5 @@ trainer = Trainer(
 trainer.train()
 
 # Save the model
-model.save_pretrained("trained_model")
-tokenizer.save_pretrained("trained_model")
+model.save_pretrained("./model/")
+tokenizer.save_pretrained("./model/")
