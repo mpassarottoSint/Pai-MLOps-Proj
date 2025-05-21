@@ -6,7 +6,10 @@ API_URL = "http://127.0.0.1:8000/predict"
 sample_texts = [
     "I love this product!",
     "It's okay, not the best.",
-    "I hate waiting in long lines."
+    "I hate waiting in long lines.",
+    "Music is boring.",
+    "I don't have time.",
+    "Today it's a meh.",
 ]
 
 for text in sample_texts:

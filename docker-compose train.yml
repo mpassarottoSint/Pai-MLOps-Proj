@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  sentiment-train:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: python train.py
+    volumes:
+      - model_data:/app/model
+    container_name: sentiment_trainer
+    restart: "no"
+
+
+volumes:
+  model_data:

@@ -12,16 +12,24 @@ services:
       - model_data:/app/model
     container_name: sentiment_service
     restart: unless-stopped
+    networks:
+      - monitoring
 
-  sentiment-train:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    command: python train.py
+
+  grafana:
+    image: grafana/grafana-enterprise
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_INSTALL_PLUGINS=marcusolsson-json-datasource
     volumes:
-      - model_data:/app/model
-    container_name: sentiment_trainer
-    restart: "no"
+      - ./7_monitoring/data:/var/lib/grafana
+    networks:
+      - monitoring
 
 volumes:
   model_data:
+  grafana_storage: {}
+
+networks:
+  monitoring:
