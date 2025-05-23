@@ -11,7 +11,7 @@ app = FastAPI(title="Sentiment Analysis API")
 
 MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 MODEL_DIR = "./model"
-MODEL_LOG_PATH = "/app/model/answers.csv"  # absolute path inside container
+MODEL_LOG_PATH = "model/answers.csv"  # absolute path inside container
 
 def load_or_download_model():
     """
@@ -96,7 +96,7 @@ def get_logged_predictions():
     Retrieve logged predictions from the CSV file.
     Useful for monitoring (Grafana).
     """
-    log_path = Path("./model/answers.csv")
+    log_path = Path(MODEL_LOG_PATH)
     if not log_path.exists():
         return []
 
@@ -115,7 +115,7 @@ def get_logged_predictions():
 @app.get("/test-write")
 def test_write_csv():
     from datetime import datetime, timezone
-    path = Path("./model/answers.csv")
+    path = Path(MODEL_LOG_PATH)
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, mode="a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
