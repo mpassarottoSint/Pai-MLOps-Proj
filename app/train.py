@@ -12,7 +12,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=3)
 
 # Dataset
-dataset = load_dataset("sentiment140")
+dataset = load_dataset("sentiment140", trust_remote_code=True)
 label_map = {0: 0, 2: 1, 4: 2}  # map original labels to 0, 1, 2
 
 def preprocess(example):
