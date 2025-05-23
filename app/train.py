@@ -17,7 +17,7 @@ label_map = {0: 0, 2: 1, 4: 2}  # map original labels to 0, 1, 2
 
 def preprocess(example):
     encoding = tokenizer(example["text"], truncation=True, padding="max_length", max_length=128)
-    encoding["label"] = label_map[example["sentiment"]]
+    encoding["label"] = [label_map[s] for s in example["sentiment"]]
     return encoding
 
 dataset = dataset.map(preprocess, batched=True)
@@ -55,6 +55,7 @@ trainer = Trainer(
 )
 
 trainer.train()
+
 # Evaluate on validation set and save metrics
 metrics = trainer.evaluate()
 metrics_path = Path("./model/metrics.json")
