@@ -15,13 +15,13 @@ services:
     networks:
       - monitoring
 
-
   grafana:
+    container_name: grafana
     image: grafana/grafana-enterprise
     ports:
       - "3000:3000"
     environment:
-      - GF_INSTALL_PLUGINS=marcusolsson-json-datasource
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
     volumes:
       - ./7_monitoring/data:/var/lib/grafana
     networks:
@@ -29,7 +29,6 @@ services:
 
 volumes:
   model_data:
-  grafana_storage: {}
 
 networks:
   monitoring:
