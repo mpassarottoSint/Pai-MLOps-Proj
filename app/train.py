@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 import torch
 
+print(f"Transformer version: {transformers.__version__}")
+
 # Model
 model_name = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
