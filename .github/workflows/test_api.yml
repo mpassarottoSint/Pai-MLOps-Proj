@@ -27,5 +27,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         uvicorn main:app --host 127.0.0.1 --port 8000 &
-        sleep 5
+        sleep 10
+        curl -s http://127.0.0.1:8000/docs || (echo "API did not start"; exit 1)
         pytest -v -s pytest_model.py
