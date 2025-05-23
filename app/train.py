@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import torch
 
+import transformers
 print(f"Transformer version: {transformers.__version__}")
 
 # Model
