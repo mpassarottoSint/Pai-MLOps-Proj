@@ -6,3 +6,4 @@ scikit-learn
 datasets
 requests
 pytest
+evaluate
